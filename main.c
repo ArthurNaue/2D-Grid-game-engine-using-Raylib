@@ -4,10 +4,6 @@
 
 typedef enum eGameScreen { LOGO = 0, TITLE, GAMEPLAY} eGameScreen;
 
-typedef struct sEntitie {
-	int iPosX, iPosY;
-} sEntitie;
-
 int aMap[] ={
 	     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -74,10 +70,7 @@ int main(void)
 
 //------------------------------------\\\WINDOW\\\----------------------------------------//
 
-    sEntitie oPlayer = {16, 16};
-
-    sEntitie* aEnemyList = malloc(sizeof(sEntitie));
-    int iEnemyNumber = 0;
+    int iPlayerPos = 0;
 
     while (!WindowShouldClose())    
     {
@@ -85,31 +78,36 @@ int main(void)
         {
             case TITLE:
             {
-                if (IsKeyPressed(KEY_SPACE) || IsGestureDetected(GESTURE_TAP))
-                {
-                    currentScreen = GAMEPLAY;
-                }
-            } break;
+                if (IsKeyPressed(KEY_SPACE) || IsGestureDetected(GESTURE_TAP)){currentScreen = GAMEPLAY;}
+            }break;
             case GAMEPLAY:
             {
                 if (IsKeyPressed(KEY_SPACE) || IsGestureDetected(GESTURE_TAP))
                 {
                 	currentScreen = TITLE;
+		}else if (IsKeyPressed(KEY_W))
+		{
+			int iNewPlayerPos = iPlayerPos - 37;
+			aMap[iPlayerPos] = 0;
+			aMap[iNewPlayerPos] = 1;
+		}else if (IsKeyPressed(KEY_A))
+		{
+			int iNewPlayerPos = iPlayerPos - 1;
+			aMap[iPlayerPos] = 0;
+			aMap[iNewPlayerPos] = 1;
+			
+		}else if (IsKeyPressed(KEY_S))
+		{
+			int iNewPlayerPos = iPlayerPos + 37;
+			aMap[iPlayerPos] = 0;
+			aMap[iNewPlayerPos] = 1;
+		}else if (IsKeyPressed(KEY_D))
+		{
+			int iNewPlayerPos = iPlayerPos + 1;
+			aMap[iPlayerPos] = 0;
+			aMap[iNewPlayerPos] = 1;
 		}
-		else if (IsKeyPressed(KEY_W))
-			{
-			    oPlayer.iPosY -= 16;
-			} else if (IsKeyPressed(KEY_A))
-			{
-		    	    oPlayer.iPosX -= 16;
-			} else if (IsKeyPressed(KEY_S))
-			{
-		    	    oPlayer.iPosY += 16;
-			} else if (IsKeyPressed(KEY_D))
-			{
-			    oPlayer.iPosX += 16;
-			}
-            	} break;
+            	}break;
             	default: break;
 
 	}
@@ -136,14 +134,16 @@ int main(void)
 			    
 			switch(aMap[i])
 			    {
-			    
+			    case 1:
+				{
+					iPlayerPos = i;
+					int aTrueSquarePosition[] = {check_true_x_position(i), check_true_y_position(i)};
+					DrawRectangle(aTrueSquarePosition[0], aTrueSquarePosition[1], 16, 16, GREEN);
+				} break;			
 			    case 2:
 			    	{
 		            		int aTrueSquarePosition[] = {check_true_x_position(i), check_true_y_position(i)}; 
-					iEnemyNumber = iEnemyNumber + 1;
-					sEntitie oEnemy = {aTrueSquarePosition[0], aTrueSquarePosition[1]};
-		    			DrawRectangle(oEnemy.iPosX, oEnemy.iPosY, 16, 16, RED);
-					aEnemyList = realloc(aEnemyList, (iEnemyNumber * sizeof(sEntitie)));
+		    			DrawRectangle(aTrueSquarePosition[0], aTrueSquarePosition[1], 16, 16, RED);
 			    	} break;
 			    
 			    case 3:
@@ -155,8 +155,6 @@ int main(void)
 			    default: break;
 			    }
 		    } 
-
-		    DrawRectangle(oPlayer.iPosX, oPlayer.iPosY, 16, 16, GREEN);
 
 		    int iLines = 0;
 		    for (int i = 0; i < 37; i++) {
