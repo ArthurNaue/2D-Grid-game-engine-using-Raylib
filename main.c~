@@ -5,7 +5,7 @@
 typedef enum eGameScreen { LOGO = 0, TITLE, GAMEPLAY} eGameScreen;
 
 int aMap[] ={
-	     1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+	     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -74,6 +74,7 @@ int main(void)
 
     while (!WindowShouldClose())    
     {
+	printf("%d\n", iPlayerPos);
         switch (currentScreen)
         {
             case TITLE:
@@ -85,27 +86,45 @@ int main(void)
                 if (IsKeyPressed(KEY_SPACE) || IsGestureDetected(GESTURE_TAP))
                 {
                 	currentScreen = TITLE;
-		}else if (IsKeyPressed(KEY_W) && (iPlayerPos - 37) > -1)
+		}else if (IsKeyPressed(KEY_W))
 		{
 			int iNewPlayerPos = iPlayerPos - 37;
-			aMap[iPlayerPos] = 0;
-			aMap[iNewPlayerPos] = 1;
-		}else if (IsKeyPressed(KEY_A) && (iPlayerPos - 1) > -1)
+			if(iNewPlayerPos < 0 && aMap[iNewPlayerPos] == 0)
+			{
+				iNewPlayerPos += 1369;
+				aMap[iPlayerPos] = 0;
+				aMap[iNewPlayerPos] = 1;
+			}
+		}else if (IsKeyPressed(KEY_A))
 		{
 			int iNewPlayerPos = iPlayerPos - 1;
-			aMap[iPlayerPos] = 0;
-			aMap[iNewPlayerPos] = 1;
-			
-		}else if (IsKeyPressed(KEY_S) && (iPlayerPos + 37) < 1369)
+			if((iNewPlayerPos % 37 == 36 || iNewPlayerPos < 0) && aMap[iNewPlayerPos] == 0)
+			{
+				iNewPlayerPos += 37;
+				aMap[iPlayerPos] = 0;
+				aMap[iNewPlayerPos] = 1;
+			}	
+		}else if (IsKeyPressed(KEY_S))
 		{
 			int iNewPlayerPos = iPlayerPos + 37;
-			aMap[iPlayerPos] = 0;
-			aMap[iNewPlayerPos] = 1;
-		}else if (IsKeyPressed(KEY_D) && (iPlayerPos + 1) < 1369)
+			if(iNewPlayerPos >= 1369 && aMap[iNewPlayerPos] == 0)
+			{
+				iNewPlayerPos -= 1369;
+				aMap[iPlayerPos] = 0;
+				aMap[iNewPlayerPos] = 1;
+			}
+		}else if (IsKeyPressed(KEY_D))
 		{
 			int iNewPlayerPos = iPlayerPos + 1;
-			aMap[iPlayerPos] = 0;
-			aMap[iNewPlayerPos] = 1;
+			if(iNewPlayerPos % 37 == 0)
+			{
+				iNewPlayerPos -= 37;
+			}
+			if(aMap[iNewPlayerPos] == 0)
+			{
+				aMap[iPlayerPos] = 0;
+				aMap[iNewPlayerPos] = 1;
+			}
 		}
             	}break;
             	default: break;
