@@ -44,7 +44,7 @@ int aMap[] ={
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	    };	
 //VECTOR TO MAP ARRAY INDEX FUNCTIONS 
-int check_true_x_position(int iAMapPosition){int iTruePosition=(iAMapPosition%37)*16; return iTruePosition;}
+int check_true_x_position(int iAMapPosition){int iTruePosition=(iAMapPosition%37)*16;return iTruePosition;}
 int check_true_y_position(int iAMapPosition){int iTruePosition=(iAMapPosition/37)*16;return iTruePosition;}
 //MAIN PROGRAM FUNCTION
 int main(void)
@@ -53,8 +53,7 @@ int main(void)
 //------------------------------------\\\WINDOW\\\----------------------------------------//
 
     //WINDOW PARAMETERS
-    const int iScreenWidth=592;
-    const int iScreenHeight=592;
+    const int iScreenWidth=592; const int iScreenHeight=592;
     //WINDOW INITIALIZATION
     InitWindow(iScreenWidth, iScreenHeight, "RAYLIB");
     //WINDOW CHOSEN
@@ -101,7 +100,7 @@ int main(void)
 				case DOWN:{if(iNewPlayerPos>=1369){iNewPlayerPos-=1369;}}break;
 				case LEFT:{if(iNewPlayerPos%37==36||iNewPlayerPos<0){iNewPlayerPos+=37;}}break;
 				case RIGHT:{if(iNewPlayerPos%37==0){iNewPlayerPos-=37;}}break;
-				default: break;	
+				default:break;	
 			}
 			int iNewPosition = aMap[iNewPlayerPos];
 			switch(iNewPosition)
@@ -118,7 +117,7 @@ int main(void)
 //------------------------------------///PLAYER MOVEMENT///------------------------------//
             
 	    }break;
-            default: break;
+            default:break;
 	}
 
 //------------------------------------\\\GAME LOGIC\\\------------------------------------//
@@ -161,17 +160,18 @@ int main(void)
 			    case 3:{draw_square(BLUE);}break;
 			    case 4:{draw_square(YELLOW);}break;
 			    case 5:{draw_square(BLACK);}break;
-			    default: break;
+			    default:break;
 			    }
 		    }
 		    //DRAW MAP LINES 
 		    int iLines=0;
-		    for (int i=0; i<37; i++) {
+		    for (int i=0; i<37; i++) 
+		    {
 			DrawLine(0, iLines, iScreenWidth, iLines, BLACK);
 		    	DrawLine(iLines, 0, iLines, iScreenHeight, BLACK);
 		        iLines += 16;	
 		    }
-                } break;
+                }break;
 
 //------------------------------------///MAIN GAME///------------------------------//
 	    	
@@ -180,8 +180,8 @@ int main(void)
 		    draw_background(BLACK);
                     DrawRectangle((iScreenHeight/2)-100, (iScreenWidth/2)-50, 200, 100, WHITE);
                     DrawText("GAME OVER", (iScreenHeight/2)-80, (iScreenWidth/2)- 0, 20, BLACK);
-		} break;
-                default: break;
+		}break;
+                default:break;
             }
         EndDrawing();
     }
