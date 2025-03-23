@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include "include/raylib.h"
 
-#define iMapSize 8
-#define iGridSize 16
+#define iMapSize 24
+#define iGridSize 32
 
 //GAME SCREENS
 typedef enum eGameScreen {LOGO = 0, TITLE, GAMEPLAY, GAMEOVER} eGameScreen;
 
 //GAME MAP
-int aMap[iMapSize][iMapSize] ={0};
+int aMap[iMapSize][iMapSize]={0};
 
 //VECTOR TO MAP ARRAY INDEX FUNCTION
 int check_true_position(int iAMapPosition){int iTruePosition=(iAMapPosition%iMapSize)*iGridSize;return iTruePosition;}
@@ -17,7 +17,8 @@ int check_true_position(int iAMapPosition){int iTruePosition=(iAMapPosition%iMap
 //MAIN PROGRAM FUNCTION
 int main(void)
 {
-    aMap[0][0] = 1;
+    //SPAWN PLAYER AT [0, 0]
+    aMap[0][0]=1;
 
 //------------------------------------\\\WINDOW\\\----------------------------------------//
 
@@ -80,7 +81,7 @@ int main(void)
 					       iPlayerPos[0]=iNewPlayerPos[0]; iPlayerPos[1]=iNewPlayerPos[1];
 					       aMap[iPlayerPos[1]][iPlayerPos[0]]=1;
 					}break;
-				case 2:{eCurrentScreen = GAMEOVER;}break;
+				case 2:{eCurrentScreen=GAMEOVER;}break;
 			}
 		}
 		if(IsKeyPressed(KEY_W)){update_player_position(UP);}
@@ -107,8 +108,8 @@ int main(void)
                 case TITLE:
                 {
 		    draw_background(BLACK);
-                    DrawRectangle((iScreenHeight/2)-100, (iScreenWidth/2)-50, 200, 100, WHITE);
-                    DrawText("TESTE RAYLIB", (iScreenHeight/2)-80, (iScreenWidth/2)-10, 20, BLACK);
+                    DrawRectangle((iScreenHeight/4), (iScreenWidth/4), iScreenHeight/2, iScreenWidth/2, WHITE);
+                    DrawText("2D GRID GAME", (iScreenHeight/4), (iScreenWidth/2), ((iMapSize*iGridSize)/14), BLACK);
                 } break;
 
 //------------------------------------///MAIN GAME///------------------------------//
@@ -133,7 +134,9 @@ int main(void)
 						iPlayerPos[0]=j;
 						iPlayerPos[1]=i;
 						draw_square(GREEN, iPlayerPos[0], iPlayerPos[1]);
-					}break;			
+					}break;		
+				case 2:{draw_square(RED, j, i);}break;	
+				case 3:{draw_square(PURPLE, j, i);}break;	
 			    	default:break;
 			    	}
 			     }
@@ -153,8 +156,8 @@ int main(void)
 		case GAMEOVER:
 	    	{
 		    draw_background(BLACK);
-                    DrawRectangle((iScreenHeight/2)-100, (iScreenWidth/2)-50, 200, 100, WHITE);
-                    DrawText("GAME OVER", (iScreenHeight/2)-80, (iScreenWidth/2)- 0, 20, BLACK);
+                    DrawRectangle((iScreenHeight/4), (iScreenWidth/4), iScreenHeight/2, iScreenWidth/2, WHITE);
+                    DrawText("GAME OVER", (iScreenHeight/4), (iScreenWidth/2), ((iMapSize*iGridSize)/12), BLACK);
 		}break;
                 default:break;
             }
