@@ -2,14 +2,15 @@
 #include <stdlib.h>
 #include "include/raylib.h"
 
-#define iMapSize 24
+#define iMapSize 10
 #define iGridSize 32
 
 //GAME SCREENS
-typedef enum eGameScreen {LOGO = 0, TITLE, GAMEPLAY, GAMEOVER} eGameScreen;
+typedef enum eGameScreen {LOGO=0, TITLE, GAMEPLAY, GAMEOVER, MAPCREATION} eGameScreen;
 
 //GAME MAP
 int aMap[iMapSize][iMapSize]={0};
+int aMapCreation[iMapSize][iMapSize]={0};
 
 //VECTOR TO MAP ARRAY INDEX FUNCTION
 int check_true_position(int iAMapPosition){int iTruePosition=(iAMapPosition%iMapSize)*iGridSize;return iTruePosition;}
@@ -42,7 +43,7 @@ int main(void)
 	//VERIFY CURRENT SCREEN
         switch (eCurrentScreen)
         {
-            case TITLE:{if(IsKeyPressed(KEY_SPACE)||IsGestureDetected(GESTURE_TAP)){eCurrentScreen=GAMEPLAY;}}break;
+            case TITLE:{if(IsKeyPressed(KEY_SPACE)||IsGestureDetected(GESTURE_TAP)){eCurrentScreen=GAMEPLAY;}else if(IsKeyPressed(KEY_M)){eCurrentScreen=MAPCREATION;}}break;
             case GAMEPLAY:
             {
 
@@ -101,6 +102,29 @@ int main(void)
 
 	//DRAW BACKGROUND COLORED RECTANGLE FUNCTION
 	void draw_background(Color eColor){DrawRectangle(0, 0, iScreenHeight, iScreenWidth, eColor);}
+
+	//DRAW MAP LINES FUNCTION
+	void draw_lines()
+	{
+	    int iLines=0;
+	    for (int i=0; i<=(iMapSize-1); i++) 
+	    {
+		DrawLine(0, iLines, iScreenWidth, iLines, BLACK);
+	    	DrawLine(iLines, 0, iLines, iScreenHeight, BLACK);
+	        iLines += iGridSize;	
+	    }
+      	}
+	
+	//DRAWING MAP INDEX SQUARE FUNCTION
+	void draw_square(Color eColor, int iPositionX, int iPositionY){DrawRectangle(check_true_position(iPositionX), check_true_position(iPositionY), iGridSize, iGridSize, eColor);}
+
+	typedef struct sButton
+	{
+		int iMapIndex;
+		int iColorIndex;
+		Rectangle rButtonColision;
+	}sButton;
+
 	BeginDrawing();
             ClearBackground(RAYWHITE);
             switch(eCurrentScreen)
@@ -116,12 +140,7 @@ int main(void)
 
                 case GAMEPLAY:
        		{
-		    //DRAWING MAP INDEX SQUARE FUNCTION
-	    	    void draw_square(Color eColor, int iPositionX, int iPositionY)	
-		    {
-			int aTrueSquarePosition[]={check_true_position(iPositionX), check_true_position(iPositionY)};
-			DrawRectangle(aTrueSquarePosition[0], aTrueSquarePosition[1], iGridSize, iGridSize, eColor);	
-		    }
+		    //MAP DRAWING
 		    for(int i=0; i<iMapSize; i++) 
 		    {
 			    for(int j=0; j<iMapSize; j++)
@@ -131,8 +150,7 @@ int main(void)
 			    	case 1:
 					{
 						//SET PLAYER POSITION TO MAP INDEX
-						iPlayerPos[0]=j;
-						iPlayerPos[1]=i;
+						iPlayerPos[0]=j; iPlayerPos[1]=i;
 						draw_square(GREEN, iPlayerPos[0], iPlayerPos[1]);
 					}break;		
 				case 2:{draw_square(RED, j, i);}break;	
@@ -141,15 +159,8 @@ int main(void)
 			    	}
 			     }
 		    }
-		    //DRAW MAP LINES 
-		    int iLines=0;
-		    for (int i=0; i<=(iMapSize-1); i++) 
-		    {
-			DrawLine(0, iLines, iScreenWidth, iLines, BLACK);
-		    	DrawLine(iLines, 0, iLines, iScreenHeight, BLACK);
-		        iLines += iGridSize;	
-		    }
-                }break;
+		    draw_lines();
+	   }break;
 
 //------------------------------------///MAIN GAME///------------------------------//
 	    	
@@ -158,6 +169,34 @@ int main(void)
 		    draw_background(BLACK);
                     DrawRectangle((iScreenHeight/4), (iScreenWidth/4), iScreenHeight/2, iScreenWidth/2, WHITE);
                     DrawText("GAME OVER", (iScreenHeight/4), (iScreenWidth/2), ((iMapSize*iGridSize)/12), BLACK);
+		}break;
+		case MAPCREATION:
+		{
+
+	            //CREATE BUTTON
+		    sButton sColorButton;
+  	            sColorButton.iMapIndex=aMapCreation[0][0]; sColorButton.iColorIndex=0; 
+		    sColorButton.rButtonColision=(Rectangle){0, 0, iGridSize, iGridSize};
+
+		    //MAP DRAWING
+		    for(int i=0; i<iMapSize; i++) 
+		    {
+			    for(int j=0; j<iMapSize; j++)
+			    {
+				sColorButton.rButtonColision.x=check_true_position(j); sColorButton.rButtonColision.y=check_true_position(i);
+
+				if(CheckCollisionPointRec(GetMousePosition(), sColorButton.rButtonColision)){if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){aMapCreation[i][j]++; if(aMapCreation[i][j]>=4){aMapCreation[i][j]=0;}}}
+
+				switch(aMapCreation[i][j])
+			    	{
+			    		case 1:{draw_square(GREEN, j, i);}break;		
+					case 2:{draw_square(RED, j, i);}break;	
+					case 3:{draw_square(PURPLE, j, i);}break;	
+			    		default:break;
+			    	}
+			     }
+		    }
+		    draw_lines(); 
 		}break;
                 default:break;
             }
