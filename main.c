@@ -1,8 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "include/raylib.h"
+
 //GAME SCREENS
 typedef enum eGameScreen {LOGO = 0, TITLE, GAMEPLAY, GAMEOVER} eGameScreen;
+
+//------------------------------------///MAP SIZE LOGIC///----------------------------------------//
+
+int iMapSize = 37;
+int iGridSize = 16;
+
+//------------------------------------///MAP SIZE LOGIC///----------------------------------------//
+
 //GAME MAP
 int aMap[] ={
 	     0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3,
@@ -44,16 +53,18 @@ int aMap[] ={
              0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 	    };	
 //VECTOR TO MAP ARRAY INDEX FUNCTIONS 
-int check_true_x_position(int iAMapPosition){int iTruePosition=(iAMapPosition%37)*16;return iTruePosition;}
-int check_true_y_position(int iAMapPosition){int iTruePosition=(iAMapPosition/37)*16;return iTruePosition;}
+int check_true_x_position(int iAMapPosition){int iTruePosition=(iAMapPosition%iMapSize)*iGridSize;return iTruePosition;}
+int check_true_y_position(int iAMapPosition){int iTruePosition=(iAMapPosition/iMapSize)*iGridSize;return iTruePosition;}
 //MAIN PROGRAM FUNCTION
 int main(void)
 {
+    //UPDATE MAP TRUE SIZE
+    int iMapTrueSize = iMapSize*iMapSize;
 
 //------------------------------------\\\WINDOW\\\----------------------------------------//
 
     //WINDOW PARAMETERS
-    const int iScreenWidth=592; const int iScreenHeight=592;
+    const int iScreenWidth=iMapSize*iGridSize; const int iScreenHeight=iMapSize*iGridSize;
     //WINDOW INITIALIZATION
     InitWindow(iScreenWidth, iScreenHeight, "RAYLIB");
     //WINDOW CHOSEN
@@ -87,8 +98,8 @@ int main(void)
 			int iNewPlayerPos = iPlayerPos;
 			switch(eDirection)
 			{
-				case UP:{iNewPlayerPos-=37;}break;
-				case DOWN:{iNewPlayerPos+=37;}break;
+				case UP:{iNewPlayerPos-=iMapSize;}break;
+				case DOWN:{iNewPlayerPos+=iMapSize;}break;
 				case LEFT:{iNewPlayerPos-=1;}break;
 				case RIGHT:{iNewPlayerPos+=1;}break;
 				default:break;	
@@ -96,10 +107,10 @@ int main(void)
 			//BOUNDARY CHECKS
 			switch(eDirection)
 			{
-				case UP:{if(iNewPlayerPos<0){iNewPlayerPos+=1369;}}break;
-				case DOWN:{if(iNewPlayerPos>=1369){iNewPlayerPos-=1369;}}break;
-				case LEFT:{if(iNewPlayerPos%37==36||iNewPlayerPos<0){iNewPlayerPos+=37;}}break;
-				case RIGHT:{if(iNewPlayerPos%37==0){iNewPlayerPos-=37;}}break;
+				case UP:{if(iNewPlayerPos<0){iNewPlayerPos+=iMapTrueSize;}}break;
+				case DOWN:{if(iNewPlayerPos>=iMapTrueSize){iNewPlayerPos-=iMapTrueSize;}}break;
+				case LEFT:{if(iNewPlayerPos%iMapSize==iMapSize-1||iNewPlayerPos<0){iNewPlayerPos+=iMapSize;}}break;
+				case RIGHT:{if(iNewPlayerPos%iMapSize==0){iNewPlayerPos-=iMapSize;}}break;
 				default:break;	
 			}
 			int iNewPosition = aMap[iNewPlayerPos];
@@ -141,14 +152,14 @@ int main(void)
 
                 case GAMEPLAY:
        		{
-		    for(int i=0; i<1369; i++) {
+		    for(int i=0; i<iMapTrueSize; i++) {
 			switch(aMap[i])
 			    {
 				//DRAWING MAP INDEX SQUARE FUNCTION
 			    	void draw_square(Color eColor)
 				{
 					int aTrueSquarePosition[] = {check_true_x_position(i), check_true_y_position(i)};
-					DrawRectangle(aTrueSquarePosition[0], aTrueSquarePosition[1], 16, 16, eColor);	
+					DrawRectangle(aTrueSquarePosition[0], aTrueSquarePosition[1], iGridSize, iGridSize, eColor);	
 				}
 			    case 1:
 				{
@@ -165,11 +176,11 @@ int main(void)
 		    }
 		    //DRAW MAP LINES 
 		    int iLines=0;
-		    for (int i=0; i<37; i++) 
+		    for (int i=0; i<=iMapSize-1; i++) 
 		    {
 			DrawLine(0, iLines, iScreenWidth, iLines, BLACK);
 		    	DrawLine(iLines, 0, iLines, iScreenHeight, BLACK);
-		        iLines += 16;	
+		        iLines += iGridSize;	
 		    }
                 }break;
 
