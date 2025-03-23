@@ -1,4 +1,4 @@
-2D Grid game made for Windows in C using Raylib as the framework and MinGW as the compiler  
+2D Grid game engine made for Windows in C using Raylib as the framework and MinGW as the compiler  
 
 ![gif](https://github.com/user-attachments/assets/071e4c47-4041-4b9c-ad64-f9f77ba49cdd)  
 
