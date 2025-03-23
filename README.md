@@ -1,4 +1,4 @@
-2D Grid game made for Windows in C using Raylib as the framework and MinGW as the compiler  
+2D Grid game engine made for Windows in C using Raylib as the framework and MinGW as the compiler  
 
 ![gif](https://github.com/user-attachments/assets/071e4c47-4041-4b9c-ad64-f9f77ba49cdd)  
 
@@ -14,4 +14,6 @@ Step 1: Open Windows terminal in the project directory
 Step 2: Run the command ".\build" to execute the "build.bat" file, it makes an output "run.exe" file  
 Step 3: Open the "run.exe" file by running the command ".\run" in the terminal or just by double clicking the file in the Windows File Explorer  
 
-Side Note: If you know how to mess with MinGW and wish to make some compilation changes, those can be made by modifiying the "build.bat" file  
+To change the map and grid size just alter the "iMapSize" and the "iGridSize' variables  
+
+Side Note: If you know how to mess with MinGW and wish to make some compilation changes, those can be made by modifiying the "build.bat" file   
