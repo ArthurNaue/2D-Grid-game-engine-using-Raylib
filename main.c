@@ -26,7 +26,7 @@ int main(void)
     //WINDOW PARAMETERS
     const int iScreenWidth=iMapSize*iGridSize; const int iScreenHeight=iMapSize*iGridSize;
     //WINDOW INITIALIZATION
-    InitWindow(iScreenWidth, iScreenHeight, "RAYLIB");
+    InitWindow(iScreenWidth, iScreenHeight, "2D GRID GAME ENGINE");
     //WINDOW CHOSEN
     eGameScreen eCurrentScreen=TITLE;
     //SET WINDOW FPS
@@ -55,6 +55,7 @@ int main(void)
 		//UPDATE MAP INDEX FOR PLAYER POSITION FUNCTION
 		void update_player_position(eDirection eDirection)
 		{
+			//VERIFY NEW POSITION MAP INDEX
 			int iNewPlayerPos[]={iPlayerPos[0], iPlayerPos[1]};
 			switch(eDirection)
 			{
@@ -73,6 +74,7 @@ int main(void)
 				case RIGHT:{if(iNewPlayerPos[0]>=iMapSize){iNewPlayerPos[0]-=iMapSize;}}break;
 				default:break;	
 			}
+			//VERIFY TYPE OF SQUARE IN NEW POSITION
 			int iNewMapPosition=aMap[iNewPlayerPos[1]][iNewPlayerPos[0]];
 			switch(iNewMapPosition)
 			{
@@ -85,6 +87,7 @@ int main(void)
 				case 2:{eCurrentScreen=GAMEOVER;}break;
 			}
 		}
+		//UPDATE PLAYER POSITION BASED ON DIRECTION
 		if(IsKeyPressed(KEY_W)){update_player_position(UP);}
 		else if(IsKeyPressed(KEY_A)){update_player_position(LEFT);}
 		else if(IsKeyPressed(KEY_S)){update_player_position(DOWN);}
@@ -118,6 +121,7 @@ int main(void)
 	//DRAWING MAP INDEX SQUARE FUNCTION
 	void draw_square(Color eColor, int iPositionX, int iPositionY){DrawRectangle(check_true_position(iPositionX), check_true_position(iPositionY), iGridSize, iGridSize, eColor);}
 
+	//BLUEPRINT FOR BUTTON
 	typedef struct sButton
 	{
 		int iMapIndex;
@@ -125,8 +129,11 @@ int main(void)
 		Rectangle rButtonColision;
 	}sButton;
 
-	BeginDrawing();
+            //START TO DRAW ON SCREEN
+	    BeginDrawing();
+	    //SET BACKGROUND TO WHITE
             ClearBackground(RAYWHITE);
+
             switch(eCurrentScreen)
             {
                 case TITLE:
