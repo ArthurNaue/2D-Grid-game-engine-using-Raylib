@@ -2,31 +2,43 @@
 #include <stdlib.h>
 #include "include/raylib.h"
 
-#define iMapSize 10
+#define iMapSizeX 10
+#define iMapSizeY 5
 #define iGridSize 32
 
 //GAME SCREENS
 typedef enum eGameScreen {LOGO=0, TITLE, GAMEPLAY, GAMEOVER, MAPCREATION} eGameScreen;
 
 //GAME MAP
-int aMap[iMapSize][iMapSize]={0};
-int aMapCreation[iMapSize][iMapSize]={0};
+int aMap[iMapSizeY][iMapSizeX]={0};
+int aMapCreation[iMapSizeY][iMapSizeX]={0};
 
 //VECTOR TO MAP ARRAY INDEX FUNCTION
-int check_true_position(int iAMapPosition){int iTruePosition=(iAMapPosition%iMapSize)*iGridSize;return iTruePosition;}
+int check_true_position(int iAMapPosition, int bYSide)
+{
+	int iTruePosition;
+	//VERIFY WHICH AXIS TO CALCULATE POSITION AND APPLY FORMULA TO TRUE VECTOR POSITION
+	if(bYSide == 0){iTruePosition=(iAMapPosition%iMapSizeX)*iGridSize;}else{iTruePosition=(iAMapPosition%iMapSizeY)*iGridSize;}
+	return iTruePosition;
+}
 
 //MAIN PROGRAM FUNCTION
 int main(void)
 {
     //SPAWN PLAYER AT [0, 0]
     aMap[0][0]=1;
+    aMap[0][6]=2;
 
 //------------------------------------\\\WINDOW\\\----------------------------------------//
 
     //WINDOW PARAMETERS
-    const int iScreenWidth=iMapSize*iGridSize; const int iScreenHeight=iMapSize*iGridSize;
+    const int iScreenWidth=iMapSizeX*iGridSize; const int iScreenHeight=iMapSizeY*iGridSize;
     //WINDOW INITIALIZATION
-    InitWindow(iScreenWidth, iScreenHeight, "RAYLIB");
+    InitWindow(iScreenWidth, iScreenHeight, "2D GRID GAME ENGINE");
+    //MAKES THE GAME UNQUITABLE WITH ESC
+    SetExitKey(KEY_NULL);
+    //CREATES THE BOOL VARIABLE TO VERIFY IF GAME SHOULD CLOSE
+    int bGameLoop=1;
     //WINDOW CHOSEN
     eGameScreen eCurrentScreen=TITLE;
     //SET WINDOW FPS
@@ -38,12 +50,12 @@ int main(void)
 
     int iPlayerPos[] = {0, 0};
     //GAME LOOP FUNCTION
-    while (!WindowShouldClose())    
+    while (bGameLoop==1)    
     {
 	//VERIFY CURRENT SCREEN
         switch (eCurrentScreen)
         {
-            case TITLE:{if(IsKeyPressed(KEY_SPACE)||IsGestureDetected(GESTURE_TAP)){eCurrentScreen=GAMEPLAY;}else if(IsKeyPressed(KEY_M)){eCurrentScreen=MAPCREATION;}}break;
+            case TITLE:{if(IsKeyPressed(KEY_SPACE)||IsGestureDetected(GESTURE_TAP)){eCurrentScreen=GAMEPLAY;}else if(IsKeyPressed(KEY_M)){eCurrentScreen=MAPCREATION;}else if(IsKeyPressed(KEY_ESCAPE)){bGameLoop=0;}}break;
             case GAMEPLAY:
             {
 
@@ -68,10 +80,10 @@ int main(void)
 			//BOUNDARY CHECKS
 			switch(eDirection)
 			{
-				case UP:{if(iNewPlayerPos[1]<0){iNewPlayerPos[1]+=iMapSize;}}break;
-				case DOWN:{if(iNewPlayerPos[1]>=iMapSize){iNewPlayerPos[1]-=iMapSize;}}break;
-				case LEFT:{if(iNewPlayerPos[0]<0){iNewPlayerPos[0]+=iMapSize;}}break;
-				case RIGHT:{if(iNewPlayerPos[0]>=iMapSize){iNewPlayerPos[0]-=iMapSize;}}break;
+				case UP:{if(iNewPlayerPos[1]<0){iNewPlayerPos[1]+=iMapSizeY;}}break;
+				case DOWN:{if(iNewPlayerPos[1]>=iMapSizeY){iNewPlayerPos[1]-=iMapSizeY;}}break;
+				case LEFT:{if(iNewPlayerPos[0]<0){iNewPlayerPos[0]+=iMapSizeX;}}break;
+				case RIGHT:{if(iNewPlayerPos[0]>=iMapSizeX){iNewPlayerPos[0]-=iMapSizeX;}}break;
 				default:break;	
 			}
 			//VERIFY TYPE OF SQUARE IN NEW POSITION
@@ -93,9 +105,14 @@ int main(void)
 		else if(IsKeyPressed(KEY_S)){update_player_position(DOWN);}
 		else if(IsKeyPressed(KEY_D)){update_player_position(RIGHT);}
 
+		//VERIFY IF USER WANTS TO GO BACK TO TITLE SCREEN
+		if(IsKeyPressed(KEY_ESCAPE)){eCurrentScreen = TITLE;}
+
 //------------------------------------///PLAYER MOVEMENT///------------------------------//
             
 	    }break;
+            case GAMEOVER:{if(IsKeyPressed(KEY_SPACE)||IsGestureDetected(GESTURE_TAP)){eCurrentScreen=GAMEPLAY;}else if(IsKeyPressed(KEY_M)){eCurrentScreen=MAPCREATION;}}break;
+            case MAPCREATION:{if(IsKeyPressed(KEY_ESCAPE)){eCurrentScreen=TITLE;}}break;
             default:break;
 	}
 
@@ -104,22 +121,27 @@ int main(void)
 //------------------------------------\\\DRAW\\\----------------------------------------//
 
 	//DRAW BACKGROUND COLORED RECTANGLE FUNCTION
-	void draw_background(Color eColor){DrawRectangle(0, 0, iScreenHeight, iScreenWidth, eColor);}
+	void draw_background(Color eColor){DrawRectangle(0, 0, iScreenWidth, iScreenHeight, eColor);}
 
 	//DRAW MAP LINES FUNCTION
 	void draw_lines()
 	{
 	    int iLines=0;
-	    for (int i=0; i<=(iMapSize-1); i++) 
+	    for (int i=0; i<=(iMapSizeX-1); i++) 
+	    {
+	    	DrawLine(iLines, 0, iLines, iScreenHeight, BLACK);
+	        iLines+=iGridSize;	
+	    }
+	    iLines=0;
+	    for (int i=0; i<=(iMapSizeY-1); i++) 
 	    {
 		DrawLine(0, iLines, iScreenWidth, iLines, BLACK);
-	    	DrawLine(iLines, 0, iLines, iScreenHeight, BLACK);
-	        iLines += iGridSize;	
+	        iLines+=iGridSize;	
 	    }
       	}
 	
 	//DRAWING MAP INDEX SQUARE FUNCTION
-	void draw_square(Color eColor, int iPositionX, int iPositionY){DrawRectangle(check_true_position(iPositionX), check_true_position(iPositionY), iGridSize, iGridSize, eColor);}
+	void draw_square(Color eColor, int iPositionX, int iPositionY){DrawRectangle(check_true_position(iPositionX, 0), check_true_position(iPositionY, 1), iGridSize, iGridSize, eColor);}
 
 	//BLUEPRINT FOR BUTTON
 	typedef struct sButton
@@ -139,8 +161,7 @@ int main(void)
                 case TITLE:
                 {
 		    draw_background(BLACK);
-                    DrawRectangle((iScreenHeight/4), (iScreenWidth/4), iScreenHeight/2, iScreenWidth/2, WHITE);
-                    DrawText("2D GRID GAME", (iScreenHeight/4), (iScreenWidth/2), ((iMapSize*iGridSize)/14), BLACK);
+                    DrawRectangle(iScreenWidth/4, iScreenHeight/4, iScreenWidth/2, iScreenHeight/2, WHITE);
                 } break;
 
 //------------------------------------///MAIN GAME///------------------------------//
@@ -148,9 +169,9 @@ int main(void)
                 case GAMEPLAY:
        		{
 		    //MAP DRAWING
-		    for(int i=0; i<iMapSize; i++) 
+		    for(int i=0; i<iMapSizeY; i++) 
 		    {
-			    for(int j=0; j<iMapSize; j++)
+			    for(int j=0; j<iMapSizeX; j++)
 			    {
 				switch(aMap[i][j])
 			    	{
@@ -174,8 +195,7 @@ int main(void)
 		case GAMEOVER:
 	    	{
 		    draw_background(BLACK);
-                    DrawRectangle((iScreenHeight/4), (iScreenWidth/4), iScreenHeight/2, iScreenWidth/2, WHITE);
-                    DrawText("GAME OVER", (iScreenHeight/4), (iScreenWidth/2), ((iMapSize*iGridSize)/12), BLACK);
+                    DrawRectangle(iScreenWidth/4, iScreenHeight/4, iScreenWidth/2, iScreenHeight/2, WHITE);
 		}break;
 		case MAPCREATION:
 		{
@@ -186,11 +206,11 @@ int main(void)
 		    sColorButton.rButtonColision=(Rectangle){0, 0, iGridSize, iGridSize};
 
 		    //MAP DRAWING
-		    for(int i=0; i<iMapSize; i++) 
+		    for(int i=0; i<iMapSizeY; i++) 
 		    {
-			    for(int j=0; j<iMapSize; j++)
+			    for(int j=0; j<iMapSizeX; j++)
 			    {
-				sColorButton.rButtonColision.x=check_true_position(j); sColorButton.rButtonColision.y=check_true_position(i);
+				sColorButton.rButtonColision.x=check_true_position(j, 0); sColorButton.rButtonColision.y=check_true_position(i, 1);
 
 				if(CheckCollisionPointRec(GetMousePosition(), sColorButton.rButtonColision)){if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){aMapCreation[i][j]++; if(aMapCreation[i][j]>=4){aMapCreation[i][j]=0;}}}
 
