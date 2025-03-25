@@ -14,6 +14,6 @@ Step 1: Open Windows terminal in the project directory
 Step 2: Run the command ".\build" to execute the "build.bat" file, it makes an output "run.exe" file  
 Step 3: Open the "run.exe" file by running the command ".\run" in the terminal or just by double clicking the file in the Windows File Explorer  
 
-To change the map and grid size just alter the "iMapSize" and the "iGridSize' variables  
+To change the map just alter the "iMapSize" variables, you can choose diferent sizes for each axis, to alter the size of the grid just change the "iGridSize' variable    
 
 Side Note: If you know how to mess with MinGW and wish to make some compilation changes, those can be made by modifiying the "build.bat" file   
