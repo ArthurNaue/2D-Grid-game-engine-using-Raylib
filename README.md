@@ -18,5 +18,11 @@ Side Note: If you know how to mess with MinGW and wish to make some compilation 
 
 To change the map just alter the "iMapSize" variables, you can choose diferent sizes for each axis, to alter the size of the grid just change the "iGridSize' variable    
 
-You start at the TITLE screen, press SPACE if you wish to play the game you created or press M to get into the map creation tool (NOT FINISHED)  
-Go back to TITLE screen with ESCAPE key, also closes the game if you are already on TITLE screen  
+There are 3 different screens in the game  
+  
+TITLE  
+GAMEPLAY  
+MAPCREATION  
+
+By default the game starts at the TITLE screen, press M to go to the MAPCREATION screen  
+In the MAPCREATION screen you can create a map by clicking the squares, to save the map press S and if you got a valid map with only 1 player it will save and you can play it at the GAMEPLAY screen, to clear the MAPCREATION screen press C
