@@ -1,28 +1,27 @@
-2D Grid game engine made for Windows in C using Raylib as the framework and MinGW as the compiler  
+# 2D Grid game engine made in C using Raylib
 
 ![gif](https://github.com/user-attachments/assets/56afbdc9-711d-43b1-ba50-6a7f01cd99d9)
 
-How to setup:  
+## How to setup:  
 
-https://www.youtube.com/watch?v=HPDLTQ4J_zQ&list=LL&index=2  
+### RAYLIB
 
-Awesome video by Rudy Faile explaining how to properly download Raylib and MinGW to start a fresh Windows project  
+Any information on how to setup Raylib can be found in the Raylib wiki: https://github.com/raysan5/raylib/wiki  
 
-How to compile and run:  
+![image](https://github.com/user-attachments/assets/70357d5f-af3f-4687-84d1-11e1d46e8233)
 
-Step 1: Open Windows terminal in the project directory  
-Step 2: Run the command ".\build" to execute the "build.bat" file, it makes an output "run.exe" file  
-Step 3: Open the "run.exe" file by running the command ".\run" in the terminal or just by double clicking the file in the Windows File Explorer  
+### GAME ENGINE
 
-Side Note: If you know how to mess with MinGW and wish to make some compilation changes, those can be made by modifiying the "build.bat" file   
+To change the map you need to open the "main.c" file and alter the "iMapSize" variables, you can choose diferent sizes for each axis, to alter the size of the grid just change the "iGridSize' variable
+**SIDE NOTE: as for the moment I have not yet implemented a way to change map and grid size directly from the engine engine, this needs to be done in the code and re-compiled everytime its changed**
 
-To change the map just alter the "iMapSize" variables, you can choose diferent sizes for each axis, to alter the size of the grid just change the "iGridSize' variable    
-
-There are 3 different screens in the game  
+There are 3 different screens in the game engine  
   
-TITLE  
+**TITLE  
 GAMEPLAY  
-MAPCREATION  
+MAPCREATION**  
 
-By default the game starts at the TITLE screen, press M to go to the MAPCREATION screen  
+By default the engine starts at the TITLE screen, press M to go to the MAPCREATION screen.  
+**SIDE NOTE: if you try to press space and play it wont work because there is no created map**  
+  
 In the MAPCREATION screen you can create a map by clicking the squares, to save the map press S and if you got a valid map with only 1 player it will save and you can play it at the GAMEPLAY screen, to clear the MAPCREATION screen press C
