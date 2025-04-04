@@ -1,5 +1,7 @@
 # 2D Grid game engine made in C using Raylib  
 
+![gif](https://github.com/user-attachments/assets/e14d54b1-8d8e-4805-abf9-d87e20cdc5e3)
+
 ## How to setup:  
  
 ### RAYLIB
