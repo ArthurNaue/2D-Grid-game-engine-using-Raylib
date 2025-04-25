@@ -1,10 +1,26 @@
 CC = gcc
 CFLAGS = -Wall -std=c11 -O2
-LDFLAGS = -lraylib -lm -lpthread -ldl -lX11 -lGL -lGLU
+
+# Link flags específicas para cada sistema operacional
+LDFLAGS_LINUX = -lraylib -lm -lpthread -ldl -lX11 -lGL -lGLU
+LDFLAGS_WINDOWS = -lraylib -lwinmm -lgdi32 -lopengl32 -lpsapi
+LDFLAGS_MACOS = -lraylib -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
+
 SRCDIR = src
 OBJDIR = obj
 BINDIR = bin
 TARGET = $(BINDIR)/Game-Engine
+
+# Detecta o sistema operacional
+ifeq ($(OS), Windows_NT)
+    LDFLAGS = $(LDFLAGS_WINDOWS)
+else
+    ifeq ($(shell uname), Darwin)
+        LDFLAGS = $(LDFLAGS_MACOS)
+    else
+        LDFLAGS = $(LDFLAGS_LINUX)
+    endif
+endif
 
 # Encontre todos os arquivos .c no diretório src
 SRCS = $(wildcard $(SRCDIR)/*.c)
