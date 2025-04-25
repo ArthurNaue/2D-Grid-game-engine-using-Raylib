@@ -4,7 +4,7 @@ LDFLAGS = -lraylib -lm -lpthread -ldl -lX11 -lGL -lGLU
 SRCDIR = src
 OBJDIR = obj
 BINDIR = bin
-TARGET = $(BINDIR)/meu_programa
+TARGET = $(BINDIR)/Game-Engine
 
 # Encontre todos os arquivos .c no diretório src
 SRCS = $(wildcard $(SRCDIR)/*.c)
