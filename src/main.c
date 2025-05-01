@@ -57,17 +57,18 @@ int main(void)
 	void create_map()
 	{
 		//VARIABLE THAT VERIFIES NUMBER OF PLAYERS IN THE MAP CREATED
-		int iGreenSquareNumber=0;
+		int iGreenSquareNumber=0; int iRedSquareNumber=0;
 
 		for(int i=0; i<iMapSizeY; i++)
 		{
 			for(int j=0; j<iMapSizeX; j++)
 			{
 				if(aMapCreation[i][j]==1){iGreenSquareNumber++;}
+				if(aMapCreation[i][j]==2){iRedSquareNumber++;}
 			}
 		}
 
-		if(iGreenSquareNumber==1)
+		if(iGreenSquareNumber==1 && iRedSquareNumber==1)
 		{
 			for(int i=0; i<iMapSizeY; i++)
 			{
@@ -83,26 +84,25 @@ int main(void)
 	void verify_if_game_is_playable()
 	{
 		//VARIABLE THAT VERIFIES NUMBER OF PLAYERS IN THE MAP CREATED
-		int iGreenSquareNumber=0;
+		int iGreenSquareNumber=0; int iRedSquareNumber=0;
 
 		for(int i=0; i<iMapSizeY; i++)
 		{
 			for(int j=0; j<iMapSizeX; j++)
 			{
 				if(aMap[i][j]==1){iGreenSquareNumber++;}
+				if(aMap[i][j]==2){iRedSquareNumber++;}
 			}
 		}
 
-		if(iGreenSquareNumber==1)
-		{
-			eCurrentScreen=GAMEPLAY;
-		}
+		if(iGreenSquareNumber==1 && iRedSquareNumber==1){eCurrentScreen=GAMEPLAY;}
 	}
 
 //------------------------------------\\\GAME MAP\\\------------------------------------//
 
 //------------------------------------\\\GAME LOGIC\\\------------------------------------//
 
+    //DEFINE PLAYER POSITION VARIABLE
     int iPlayerPos[2];
     //GAME LOOP FUNCTION
     while (bGameLoop==1)    
@@ -110,7 +110,15 @@ int main(void)
 	//VERIFY CURRENT SCREEN
         switch (eCurrentScreen)
         {
-            case TITLE:{if(IsKeyPressed(KEY_SPACE)||IsGestureDetected(GESTURE_TAP)){verify_if_game_is_playable();}else if(IsKeyPressed(KEY_M)){eCurrentScreen=MAPCREATION;}else if(IsKeyPressed(KEY_ESCAPE)){bGameLoop=0;}}break;
+            case TITLE:
+		    {
+			    if(IsKeyPressed(KEY_SPACE)||IsGestureDetected(GESTURE_TAP))
+			    {verify_if_game_is_playable();}
+			    else if(IsKeyPressed(KEY_M))
+			    {eCurrentScreen=MAPCREATION;}
+			    else if(IsKeyPressed(KEY_ESCAPE))
+			    {bGameLoop=0;}
+		    }break;
             case GAMEPLAY:
             {
 
@@ -192,7 +200,7 @@ int main(void)
 		DrawLine(0, iLines, iScreenWidth, iLines, BLACK);
 	        iLines+=iGridSize;	
 	    }
-      	}
+ 	}
 	
 	//DRAWING MAP INDEX SQUARE FUNCTION
 	void draw_square(Color eColor, int iPositionX, int iPositionY){DrawRectangle(check_true_position(iPositionX, 0), check_true_position(iPositionY, 1), iGridSize, iGridSize, eColor);}
@@ -205,7 +213,7 @@ int main(void)
 		Rectangle rButtonColision;
 	}sButton;
 
-            //START TO DRAW ON SCREEN
+      	    //START TO DRAW ON SCREEN
 	    BeginDrawing();
 	    //SET BACKGROUND TO WHITE
             ClearBackground(RAYWHITE);
@@ -216,7 +224,7 @@ int main(void)
                 {
 		    draw_background(BLACK);
                     DrawRectangle(iScreenWidth/4, iScreenHeight/4, iScreenWidth/2, iScreenHeight/2, WHITE);
-                } break;
+                }break;
 
 //------------------------------------///MAIN GAME///------------------------------//
 
@@ -249,9 +257,9 @@ int main(void)
 		case MAPCREATION:
 		{
 
-	            //CREATE BUTTON
+	      //CREATE BUTTON
 		    sButton sColorButton;
-  	            sColorButton.iMapIndex=aMapCreation[0][0]; sColorButton.iColorIndex=0; 
+  	    sColorButton.iMapIndex=aMapCreation[0][0]; sColorButton.iColorIndex=0; 
 		    sColorButton.rButtonColision=(Rectangle){0, 0, iGridSize, iGridSize};
 
 		    //MAP DRAWING
@@ -261,16 +269,23 @@ int main(void)
 			    {
 				sColorButton.rButtonColision.x=check_true_position(j, 0); sColorButton.rButtonColision.y=check_true_position(i, 1);
 
-				if(CheckCollisionPointRec(GetMousePosition(), sColorButton.rButtonColision)){if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT)){aMapCreation[i][j]++; if(aMapCreation[i][j]>=4){aMapCreation[i][j]=0;}}}
+				if(CheckCollisionPointRec(GetMousePosition(), sColorButton.rButtonColision))
+				{
+					if(IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+					{
+						aMapCreation[i][j]++;
+					       	if(aMapCreation[i][j]>=4){aMapCreation[i][j]=0;}
+					}
+				}
 
 				switch(aMapCreation[i][j])
 			    	{
-			    		case 1:{draw_square(GREEN, j, i);}break;		
-					case 2:{draw_square(RED, j, i);}break;	
-					case 3:{draw_square(PURPLE, j, i);}break;	
-			    		default:break;
+			        case 1:{draw_square(GREEN, j, i);}break;		
+			        case 2:{draw_square(RED, j, i);}break;	
+				case 3:{draw_square(PURPLE, j, i);}break;	
+			    	default:break;
 			    	}
-			     }
+			    }
 		    }
 		    draw_lines(); 
 		}break;
