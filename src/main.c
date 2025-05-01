@@ -130,11 +130,28 @@ int main(void)
 		{
 			//VERIFY NEW POSITION MAP INDEX
 			int iNewEnemyPos[]={iEnemyPos[0], iEnemyPos[1]};
-			iNewEnemyPos[0]+=1;
+			
+			int iNewEnemyRandomPos = (rand() % 4) + 1;
+
+			switch(iNewEnemyRandomPos)
+			{
+					
+				case 1:{iNewEnemyPos[1]-=1;}break;
+				case 2:{iNewEnemyPos[1]+=1;}break;
+				case 3:{iNewEnemyPos[0]-=1;}break;
+				case 4:{iNewEnemyPos[0]+=1;}break;
+			}
 
 			//BOUNDARY CHECKS
-			if(iNewEnemyPos[0]>=iMapSizeX){iNewEnemyPos[0]-=iMapSizeX;}
-			
+			switch(iNewEnemyRandomPos)
+			{
+				case 1:{if(iNewEnemyPos[1]<0){iNewEnemyPos[1]+=iMapSizeY;}}break;
+				case 2:{if(iNewEnemyPos[1]>=iMapSizeY){iNewEnemyPos[1]-=iMapSizeY;}}break;
+				case 3:{if(iNewEnemyPos[0]<0){iNewEnemyPos[0]+=iMapSizeX;}}break;
+				case 4:{if(iNewEnemyPos[0]>=iMapSizeX){iNewEnemyPos[0]-=iMapSizeX;}}break;
+				default:break;	
+			}
+
 			//VERIFY TYPE OF SQUARE IN NEW POSITION
 			int iNewMapPosition=aMap[iNewEnemyPos[1]][iNewEnemyPos[0]];
 			switch(iNewMapPosition)
