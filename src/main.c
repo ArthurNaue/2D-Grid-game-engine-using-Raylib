@@ -103,7 +103,8 @@ int main(void)
 //------------------------------------\\\GAME LOGIC\\\------------------------------------//
 
     //DEFINE PLAYER POSITION VARIABLE
-    int iPlayerPos[2];
+    int iPlayerPos[2]; int iEnemyPos[2];
+
     //GAME LOOP FUNCTION
     while (bGameLoop==1)    
     {
@@ -122,8 +123,36 @@ int main(void)
             case GAMEPLAY:
             {
 
-//------------------------------------///PLAYER MOVEMENT///------------------------------//
+//------------------------------------///ENEMY MOVEMENT///------------------------------//
+
+            	//UPDATE MAP INDEX FOR ENEMY POSITION FUNCTION
+		void update_enemy_position()
+		{
+			//VERIFY NEW POSITION MAP INDEX
+			int iNewEnemyPos[]={iEnemyPos[0], iEnemyPos[1]};
+			iNewEnemyPos[0]+=1;
+
+			//BOUNDARY CHECKS
+			if(iNewEnemyPos[0]>=iMapSizeX){iNewEnemyPos[0]-=iMapSizeX;}
+			
+			//VERIFY TYPE OF SQUARE IN NEW POSITION
+			int iNewMapPosition=aMap[iNewEnemyPos[1]][iNewEnemyPos[0]];
+			switch(iNewMapPosition)
+			{
+				case 0:
+					{
+					       aMap[iEnemyPos[1]][iEnemyPos[0]]=0;
+					       iEnemyPos[0]=iNewEnemyPos[0]; iEnemyPos[1]=iNewEnemyPos[1];
+					       aMap[iEnemyPos[1]][iEnemyPos[0]]=2;
+					}break;
+				case 1:{eCurrentScreen=TITLE;}break;
+			}
+		}	
 		
+//------------------------------------///ENEMY MOVEMENT///------------------------------//
+
+//------------------------------------///PLAYER MOVEMENT///------------------------------//
+
 		//PLAYER DIRECTION ENUM
 		typedef enum eDirection {UP=0, DOWN, LEFT, RIGHT} eDirection;
 
@@ -140,6 +169,7 @@ int main(void)
 				case RIGHT:{iNewPlayerPos[0]++;}break;
 				default:break;	
 			}
+
 			//BOUNDARY CHECKS
 			switch(eDirection)
 			{
@@ -149,6 +179,7 @@ int main(void)
 				case RIGHT:{if(iNewPlayerPos[0]>=iMapSizeX){iNewPlayerPos[0]-=iMapSizeX;}}break;
 				default:break;	
 			}
+
 			//VERIFY TYPE OF SQUARE IN NEW POSITION
 			int iNewMapPosition=aMap[iNewPlayerPos[1]][iNewPlayerPos[0]];
 			switch(iNewMapPosition)
@@ -162,17 +193,18 @@ int main(void)
 				case 2:{eCurrentScreen=TITLE;}break;
 			}
 		}
+
 		//UPDATE PLAYER POSITION BASED ON DIRECTION
-		if(IsKeyPressed(KEY_W)){update_player_position(UP);}
-		else if(IsKeyPressed(KEY_A)){update_player_position(LEFT);}
-		else if(IsKeyPressed(KEY_S)){update_player_position(DOWN);}
-		else if(IsKeyPressed(KEY_D)){update_player_position(RIGHT);}
+		if(IsKeyPressed(KEY_W)){update_player_position(UP);update_enemy_position();}
+		else if(IsKeyPressed(KEY_A)){update_player_position(LEFT); update_enemy_position();}
+		else if(IsKeyPressed(KEY_S)){update_player_position(DOWN);update_enemy_position();}
+		else if(IsKeyPressed(KEY_D)){update_player_position(RIGHT);update_enemy_position();}
 
 		//VERIFY IF USER WANTS TO GO BACK TO TITLE SCREEN
 		if(IsKeyPressed(KEY_ESCAPE)){eCurrentScreen = TITLE;}
 
 //------------------------------------///PLAYER MOVEMENT///------------------------------//
-            
+
 	    }break;
             case MAPCREATION:{if(IsKeyPressed(KEY_ESCAPE)){eCurrentScreen=TITLE;}else if(IsKeyPressed(KEY_S)){create_map();}else if(IsKeyPressed(KEY_C)){clear_creation_map();}}break;
             default:break;
@@ -243,7 +275,12 @@ int main(void)
 						iPlayerPos[0]=j; iPlayerPos[1]=i;
 						draw_square(GREEN, iPlayerPos[0], iPlayerPos[1]);
 					}break;		
-				case 2:{draw_square(RED, j, i);}break;	
+				case 2:
+					{
+						//SET ENEMY POSITION TO MAP INDEX
+						iEnemyPos[0]=j; iEnemyPos[1]=i;
+						draw_square(RED, iEnemyPos[0], iEnemyPos[1]);
+					}break;	
 				case 3:{draw_square(PURPLE, j, i);}break;	
 			    	default:break;
 			    	}
@@ -257,9 +294,9 @@ int main(void)
 		case MAPCREATION:
 		{
 
-	      //CREATE BUTTON
+	            //CREATE BUTTON
 		    sButton sColorButton;
-  	    sColorButton.iMapIndex=aMapCreation[0][0]; sColorButton.iColorIndex=0; 
+  	    	    sColorButton.iMapIndex=aMapCreation[0][0]; sColorButton.iColorIndex=0; 
 		    sColorButton.rButtonColision=(Rectangle){0, 0, iGridSize, iGridSize};
 
 		    //MAP DRAWING
