@@ -20,8 +20,7 @@ There are 3 different screens in the game engine
 **TITLE  
 GAMEPLAY  
 MAPCREATION**  
-
-By default the engine starts at the TITLE screen, press M to go to the MAPCREATION screen.    
-**SIDE NOTE: if you try to press space and play it wont work because there is no created map**  
+ 
+**SIDE NOTE: if you try to press play it wont work because there is no created map, so you need to create one first**  
   
-In the MAPCREATION screen you can create a map by clicking the squares, to save the map press S and if you got a valid map with only 1 player it will save and you can play it at the GAMEPLAY screen, to clear the MAPCREATION screen press C
+In the MAPCREATION screen you can create a map by clicking the squares, to save the map press S and if you got a valid map with only 1 player and 1 enemy it will save and you can play it at the GAMEPLAY screen, to clear the MAPCREATION screen press C
