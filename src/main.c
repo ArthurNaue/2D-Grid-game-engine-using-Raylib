@@ -8,8 +8,31 @@
 #define iMapSizeY 10
 #define iGridSize 32
 
-//GAME SCREENS
+//GAME SCREEN ENUM
 typedef enum eGameScreen {LOGO=0, TITLE, GAMEPLAY, MAPCREATION} eGameScreen;
+
+//PLAYER DIRECTION ENUM
+typedef enum eDirection {UP=0, DOWN, LEFT, RIGHT} eDirection;
+
+//VECTOR TO MAP ARRAY INDEX FUNCTION
+int check_true_position(int iAMapPosition, int bYSide)
+{
+	int iTruePosition;
+	//VERIFY WHICH AXIS TO CALCULATE POSITION AND APPLY FORMULA TO TRUE VECTOR POSITION
+	if(bYSide == 0){iTruePosition=(iAMapPosition%iMapSizeX)*iGridSize;}else{iTruePosition=(iAMapPosition%iMapSizeY)*iGridSize;}
+	return iTruePosition;
+}
+
+//DRAWING MAP INDEX SQUARE FUNCTION
+void draw_square(Color eColor, int iPositionX, int iPositionY){DrawRectangle(check_true_position(iPositionX, 0), check_true_position(iPositionY, 1), iGridSize, iGridSize, eColor);}
+
+//BLUEPRINT FOR BUTTON
+typedef struct sButton
+{
+	int iMapIndex;
+	int iColorIndex;
+	Rectangle rButtonColision;
+}sButton;
 
 //MAIN PROGRAM FUNCTION
 int main(void)
@@ -33,15 +56,6 @@ int main(void)
 //------------------------------------\\\GAME MAP\\\------------------------------------//
 	//GAME MAP VARIABLES
 	int aMap[iMapSizeY][iMapSizeX]={0}; int aMapCreation[iMapSizeY][iMapSizeX]={0};
-
-	//VECTOR TO MAP ARRAY INDEX FUNCTION
-	int check_true_position(int iAMapPosition, int bYSide)
-	{
-		int iTruePosition;
-		//VERIFY WHICH AXIS TO CALCULATE POSITION AND APPLY FORMULA TO TRUE VECTOR POSITION
-		if(bYSide == 0){iTruePosition=(iAMapPosition%iMapSizeX)*iGridSize;}else{iTruePosition=(iAMapPosition%iMapSizeY)*iGridSize;}
-		return iTruePosition;
-	}
 
 	//CLEAR THE MAP CREATION ARRAY
 	void clear_creation_map()
@@ -164,8 +178,6 @@ int main(void)
 
 //------------------------------------///PLAYER MOVEMENT///------------------------------//
 
-		//PLAYER DIRECTION ENUM
-		typedef enum eDirection {UP=0, DOWN, LEFT, RIGHT} eDirection;
 
 		//UPDATE MAP INDEX FOR PLAYER POSITION FUNCTION
 		void update_player_position(eDirection eDirection)
@@ -245,17 +257,8 @@ int main(void)
 	    }
  	}
 	
-	//DRAWING MAP INDEX SQUARE FUNCTION
-	void draw_square(Color eColor, int iPositionX, int iPositionY){DrawRectangle(check_true_position(iPositionX, 0), check_true_position(iPositionY, 1), iGridSize, iGridSize, eColor);}
 
-	//BLUEPRINT FOR BUTTON
-	typedef struct sButton
-	{
-		int iMapIndex;
-		int iColorIndex;
-		Rectangle rButtonColision;
-	}sButton;
-
+	
       	    //START TO DRAW ON SCREEN
 	    BeginDrawing();
 	    //SET BACKGROUND TO WHITE
