@@ -40,7 +40,7 @@ int main(void)
 //------------------------------------\\\WINDOW\\\----------------------------------------//
 
     	//WINDOW PARAMETERS
-    	const int iScreenWidth=iMapSizeX*iGridSize; const int iScreenHeight=iMapSizeY*iGridSize;
+    	const int iScreenWidth=iMapSizeX*iGridSize; const int iScreenHeight=iMapSizeY*iGridSize + 100;
     	InitWindow(iScreenWidth, iScreenHeight, "2D GRID GAME ENGINE");
     	//MAKES THE GAME UNQUITABLE WITH ESC
     	SetExitKey(KEY_NULL);
@@ -127,10 +127,8 @@ int main(void)
 	//VERIFY CURRENT SCREEN
         switch (eCurrentScreen)
         {
-	    case TITLE:{if(IsKeyPressed(KEY_ESCAPE)){bGameLoop=0;}}
             case GAMEPLAY:
             {
-
 //------------------------------------///ENEMY MOVEMENT///------------------------------//
 
             	//UPDATE MAP INDEX FOR ENEMY POSITION FUNCTION
@@ -229,7 +227,6 @@ int main(void)
 //------------------------------------///PLAYER MOVEMENT///------------------------------//
 
 	    }break;
-            case MAPCREATION:{if(IsKeyPressed(KEY_ESCAPE)){eCurrentScreen=TITLE;}else if(IsKeyPressed(KEY_S)){create_map();}else if(IsKeyPressed(KEY_C)){clear_creation_map();}}break;
             default:break;
 	}
 
@@ -246,11 +243,11 @@ int main(void)
 	    int iLines=0;
 	    for (int i=0; i<=(iMapSizeX-1); i++) 
 	    {
-	    	DrawLine(iLines, 0, iLines, iScreenHeight, BLACK);
+	    	DrawLine(iLines, 0, iLines, iScreenHeight - 100, BLACK);
 	        iLines+=iGridSize;	
 	    }
 	    iLines=0;
-	    for (int i=0; i<=(iMapSizeY-1); i++) 
+	    for (int i=0; i<=(iMapSizeY); i++) 
 	    {
 		DrawLine(0, iLines, iScreenWidth, iLines, BLACK);
 	        iLines+=iGridSize;	
@@ -271,10 +268,10 @@ int main(void)
 		    draw_background(BLACK);
 
 		    //GUI BUTTONS
-		    if(GuiButton((Rectangle){iScreenWidth/3, iScreenHeight/6, iScreenWidth/3, iScreenHeight/3}, "PLAY")){verify_if_game_is_playable();}
-                    if(GuiButton((Rectangle){iScreenWidth/3, iScreenHeight/2, iScreenWidth/3, iScreenHeight/3}, "CREATE MAP")){eCurrentScreen=MAPCREATION;}
-		    if(GuiButton((Rectangle){iScreenWidth - iScreenWidth/6, iScreenHeight - iScreenHeight/6, iScreenWidth/6, iScreenHeight/6}, "EXIT")){bGameLoop=0;} 
-                }break;
+		    if(GuiButton((Rectangle){0, iScreenHeight-100, iScreenWidth/3, 100}, "PLAY")){verify_if_game_is_playable();}
+		    if(GuiButton((Rectangle){iScreenWidth-((iScreenWidth/3)*2), iScreenHeight-100, iScreenWidth/3, 100}, "CREATE MAP")){eCurrentScreen=MAPCREATION;}
+		    if(GuiButton((Rectangle){iScreenWidth-(iScreenWidth/3), iScreenHeight-100, iScreenWidth/3, 100}, "EXIT")){bGameLoop=0;}
+		}break;
 
 //------------------------------------///MAIN GAME///------------------------------//
 
@@ -305,6 +302,8 @@ int main(void)
 			     }
 		    }
 		    draw_lines();
+
+		    if(GuiButton((Rectangle){0, iScreenHeight-100, iScreenWidth, 100}, "EXIT")){eCurrentScreen=TITLE;}
 	   }break;
 
 //------------------------------------///MAIN GAME///------------------------------//
@@ -342,7 +341,11 @@ int main(void)
 			    	}
 			    }
 		    }
-		    draw_lines(); 
+		    draw_lines();
+
+		    if(GuiButton((Rectangle){0, iScreenHeight-100, iScreenWidth/3, 100}, "SAVE")){create_map();}
+		    if(GuiButton((Rectangle){iScreenWidth-((iScreenWidth/3)*2), iScreenHeight-100, iScreenWidth/3, 100}, "CLEAR")){clear_creation_map();}
+		    if(GuiButton((Rectangle){iScreenWidth-(iScreenWidth/3), iScreenHeight-100, iScreenWidth/3, 100}, "EXIT")){eCurrentScreen=TITLE;}
 		}break;
                 default:break;
             }

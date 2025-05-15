@@ -7,7 +7,7 @@ set(CMAKE_DEPENDS_GENERATOR "Unix Makefiles")
 # The top level Makefile was generated from the following files:
 set(CMAKE_MAKEFILE_DEPENDS
   "CMakeCache.txt"
-  "/home/aluno/Projects/2D-Grid-game-engine-using-Raylib/CMakeLists.txt"
+  "/home/aluno/Projetos/2D-Grid-game-engine-using-Raylib/CMakeLists.txt"
   "CMakeFiles/3.25.1/CMakeCCompiler.cmake"
   "CMakeFiles/3.25.1/CMakeSystem.cmake"
   "/usr/local/lib/cmake/raylib/raylib-config-version.cmake"

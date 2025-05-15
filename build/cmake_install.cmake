@@ -1,4 +1,4 @@
-# Install script for directory: /home/aluno/Projects/2D-Grid-game-engine-using-Raylib
+# Install script for directory: /home/aluno/Projetos/2D-Grid-game-engine-using-Raylib
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/aluno/Projects/2D-Grid-game-engine-using-Raylib/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/aluno/Projetos/2D-Grid-game-engine-using-Raylib/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
