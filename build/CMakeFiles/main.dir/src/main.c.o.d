@@ -1,5 +1,5 @@
 CMakeFiles/main.dir/src/main.c.o: \
- /home/aluno/Projects/2D-Grid-game-engine-using-Raylib/src/main.c \
+ /home/aluno/Projetos/2D-Grid-game-engine-using-Raylib/src/main.c \
  /usr/include/stdc-predef.h /usr/include/stdio.h \
  /usr/include/x86_64-linux-gnu/bits/libc-header-start.h \
  /usr/include/features.h /usr/include/features-time64.h \
@@ -50,7 +50,7 @@ CMakeFiles/main.dir/src/main.c.o: \
  /usr/include/x86_64-linux-gnu/bits/stdlib-float.h \
  /usr/local/include/raylib.h \
  /usr/lib/gcc/x86_64-linux-gnu/12/include/stdbool.h \
- /home/aluno/Projects/2D-Grid-game-engine-using-Raylib/src/raygui.h \
+ /home/aluno/Projetos/2D-Grid-game-engine-using-Raylib/src/raygui.h \
  /usr/include/ctype.h /usr/include/x86_64-linux-gnu/bits/types/locale_t.h \
  /usr/include/x86_64-linux-gnu/bits/types/__locale_t.h \
  /usr/include/string.h /usr/include/strings.h /usr/include/math.h \

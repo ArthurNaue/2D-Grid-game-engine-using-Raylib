@@ -40,7 +40,7 @@ int main(void)
 //------------------------------------\\\WINDOW\\\----------------------------------------//
 
     	//WINDOW PARAMETERS
-    	const int iScreenWidth=iMapSizeX*iGridSize; const int iScreenHeight=iMapSizeY*iGridSize + 100;
+    	const int iScreenWidth=iMapSizeX*iGridSize, iScreenHeight=iMapSizeY*iGridSize + 100;
     	InitWindow(iScreenWidth, iScreenHeight, "2D GRID GAME ENGINE");
     	//MAKES THE GAME UNQUITABLE WITH ESC
     	SetExitKey(KEY_NULL);
@@ -119,7 +119,7 @@ int main(void)
 //------------------------------------\\\GAME LOGIC\\\------------------------------------//
 
     //DEFINE PLAYER POSITION VARIABLE
-    int iPlayerPos[2]; int iEnemyPos[2];
+    int iPlayerPos[2], iEnemyPos[2];
 
     //GAME LOOP FUNCTION
     while (bGameLoop==1)    
