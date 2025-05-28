@@ -1,26 +1,84 @@
-# 2D Grid game engine made in C using Raylib  
 
-![game_engine](https://github.com/user-attachments/assets/b8acb225-d9e5-4d1e-a3b9-77a62c07513a)
+# 2D Grid Game Engine (Raylib + C)
 
-## How to setup:  
- 
-### RAYLIB
+This project is a learning-focused 2D grid-based game engine built in C using [Raylib](https://www.raylib.com/).
+It serves as a foundation for experimenting with tile-based mechanics, screen transitions, and map editing.
 
-Any information on how to setup Raylib can be found in the Raylib wiki: https://github.com/raysan5/raylib/wiki  
+---
 
-![image](https://github.com/user-attachments/assets/70357d5f-af3f-4687-84d1-11e1d46e8233)
+## 📁 Project Structure
 
-### GAME ENGINE
+```
+2D-Grid-game-engine-using-Raylib/
+├── build/              # Compiled binaries
+├── src/                # Main source code (.c)
+├── CMakeLists          # Build script using CMake
+└── README.md           # This file
+```
 
-To change the map you need to open the "main.c" file and alter the "iMapSize" variables, you can choose diferent sizes for each axis, to alter the size of the grid just change the "iGridSize' variable  
-**SIDE NOTE: as for the moment I have not yet implemented a way to change map and grid size directly from the engine engine, this needs to be done in the code and re-compiled everytime its changed**
+---
 
-There are 3 different screens in the game engine  
-  
-**TITLE  
-GAMEPLAY  
-MAPCREATION**  
- 
-**SIDE NOTE: if you try to press play it wont work because there is no created map, so you need to create one first**  
-  
-In the MAPCREATION screen you can create a map by clicking the squares, to save the map press S and if you got a valid map with only 1 player and 1 enemy it will save and you can play it at the GAMEPLAY screen, to clear the MAPCREATION screen press C
+## ⚙️ Setup Instructions
+
+### 1. Install Raylib
+
+Follow the official Raylib installation guide: [Raylib Wiki](https://github.com/raysan5/raylib/wiki)
+
+### 2. Build the Project
+
+Ensure you have `CMake` and a C compiler installed. Then, in the project root directory, run:
+
+```bash
+make
+```
+
+This will compile the project and place the executable in the `build/` directory.
+
+---
+
+## 🕹️ How to Use
+
+### Map and Grid Configuration
+
+To customize the map and grid sizes, modify the following variables in `main.c`:
+
+- `iMapSize` – Define the map dimensions (width and height).
+- `iGridSize` – Set the size of each grid cell.
+
+**Note:** Currently, these settings are hardcoded. To apply changes, you must recompile the project after editing these values.
+
+### Screen Navigation
+
+The engine includes three screens:
+
+- **TITLE** – The initial screen displayed upon launching the game.
+- **GAMEPLAY** – The main game screen.
+- **MAPCREATION** – A screen for creating and editing maps.
+
+**Note:** Ensure that a map is created before starting the game; otherwise, pressing `PLAY` will have no effect.
+
+---
+
+## 🧪 Features
+
+- Basic 2D grid rendering using Raylib.
+- Multiple screen management (Title, Gameplay, Map Creation).
+- Customizable map and grid sizes via source code.
+
+---
+
+## 📌 Notes
+
+- The engine is in an early development stage and primarily serves educational purposes.
+
+---
+
+## 🧱 Dependencies
+
+- [Raylib](https://www.raylib.com/) – A simple and easy-to-use library to learn game programming.
+
+---
+
+## 🧑‍💻 Author
+
+- **Arthur Naue** – [GitHub Profile](https://github.com/ArthurNaue)
